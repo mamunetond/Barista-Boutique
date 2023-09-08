@@ -14,181 +14,137 @@ from .models import Product, Review
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
 
- 
-# Create your views here. 
-
-
 class HomePageView(TemplateView): 
-
     template_name = 'pages/home.html'
     
 
 class AboutPageView(TemplateView):
-    template_name = 'pages/about.html'
-    
-    def get_context_data(self, **kwargs): 
+  template_name = 'pages/about.html'
+  
+  def get_context_data(self, **kwargs): 
+    context = super().get_context_data(**kwargs) 
 
-        context = super().get_context_data(**kwargs) 
+    context.update({ 
 
-        context.update({ 
+      "title": "Tienda de Café", 
 
-            "title": "Tienda de Café", 
+      "subtitle": "¡Para los verdaderos amantes de Café !", 
 
-            "subtitle": "¡Para los verdaderos amantes de Café !", 
+      "description": "Tu café ideal, a un solo clic", 
 
-            "description": "Tu café ideal, a un solo clic", 
+      "author": "Developed by: Mario Alejandro Muñetón Durango", 
 
-            "author": "Developed by: Mario Alejandro Muñetón Durango", 
+    }) 
 
-        }) 
 
- 
 
-        return context
+    return context
     
     
     
 class ProductIndexView(View): 
 
-    template_name = 'products/index.html' 
+  template_name = 'products/index.html' 
 
- 
+  def get(self, request): 
 
-    def get(self, request): 
+    viewData = {} 
 
-        viewData = {} 
+    viewData["title"] = "Tienda de Café - El Barista" 
 
-        viewData["title"] = "Tienda de Café - El Barista" 
+    viewData["subtitle"] =  "Productos - Métodos de Filtrado" 
 
-        viewData["subtitle"] =  "Productos - Métodos de Filtrado" 
+    viewData["products"] = Product.objects.all() 
 
-        viewData["products"] = Product.objects.all() 
 
- 
 
-        return render(request, self.template_name, viewData) 
+    return render(request, self.template_name, viewData) 
 
  
 
 class ProductShowView(View): 
+  template_name = 'products/show.html'
+  
+  def get(self, request, id): 
+    # Check if product id is valid 
+    try: 
+      product_id = int(id) 
 
-    template_name = 'products/show.html'
+      if product_id < 1: 
+        raise ValueError("Product id must be 1 or greater") 
+
+      product = get_object_or_404(Product, pk=product_id) 
+
+    except (ValueError, IndexError): 
+
+      # If the product id is not valid, redirect to the home page 
+      return HttpResponseRedirect(reverse('home')) 
     
-    def get(self, request, id): 
-        
-        # Check if product id is valid 
+    viewData = {} 
 
-        try: 
+    product = get_object_or_404(Product, pk=product_id) 
 
-            product_id = int(id) 
+    viewData["title"] = product.tittle + " - Tienda de Café - El barista" 
 
-            if product_id < 1: 
+    viewData["subtitle"] =  product.tittle + " - Product information" 
 
-                raise ValueError("Product id must be 1 or greater") 
+    viewData["product"] = product 
 
-            product = get_object_or_404(Product, pk=product_id) 
-
-        except (ValueError, IndexError): 
-
-            # If the product id is not valid, redirect to the home page 
-
-            return HttpResponseRedirect(reverse('home')) 
-        
-        viewData = {} 
-
-        product = get_object_or_404(Product, pk=product_id) 
-
-        viewData["title"] = product.tittle + " - Tienda de Café - El barista" 
-
-        viewData["subtitle"] =  product.tittle + " - Product information" 
-
-        viewData["product"] = product 
-
- 
-
-        return render(request, self.template_name, viewData)
+    return render(request, self.template_name, viewData)
     
 class ProductListView(ListView): 
+  model = Product 
+  template_name = 'product_list.html' 
+  context_object_name = 'products'  # This will allow you to loop through 'products' in your template 
 
-    model = Product 
+  def get_context_data(self, **kwargs): 
+    context = super().get_context_data(**kwargs) 
+    context['title'] = 'Tienda de Café - El Barista' 
+    context['subtitle'] = 'List of products' 
 
-    template_name = 'product_list.html' 
-
-    context_object_name = 'products'  # This will allow you to loop through 'products' in your template 
-
- 
-
-    def get_context_data(self, **kwargs): 
-
-        context = super().get_context_data(**kwargs) 
-
-        context['title'] = 'Tienda de Café - El Barista' 
-
-        context['subtitle'] = 'List of products' 
-
-        return context    
+    return context    
     
 
 class ProductForm(forms.ModelForm): 
- 
-    class Meta: 
+  class Meta: 
+    model = Product 
+    fields = '__all__' 
 
-        model = Product 
+  def clean_price(self): 
+    price = self.cleaned_data.get('price') 
 
-        fields = '__all__' 
+    if price is not None and price <= 0: 
+      raise ValidationError('Price must be greater than zero.') 
 
- 
+    return price 
 
-    def clean_price(self): 
-
-        price = self.cleaned_data.get('price') 
-
-        if price is not None and price <= 0: 
-
-            raise ValidationError('Price must be greater than zero.') 
-
-        return price 
-
- 
 
 class ProductCreateView(View): 
+  template_name = 'products/create.html' 
 
-    template_name = 'products/create.html' 
+  def get(self, request): 
+    form = ProductForm() 
 
- 
+    viewData = {} 
+    viewData["title"] = "Create product" 
+    viewData["form"] = form 
 
-    def get(self, request): 
+    return render(request, self.template_name, viewData) 
 
-        form = ProductForm() 
+  def post(self, request): 
+    form = ProductForm(request.POST) 
 
-        viewData = {} 
+    if form.is_valid(): 
+      messagebox.showinfo(message='Elemento creado satisfactoriamente')
+      form.save() 
+      return redirect('index')  
 
-        viewData["title"] = "Create product" 
+    else: 
+      viewData = {} 
+      viewData["title"] = "Create product" 
+      viewData["form"] = form 
 
-        viewData["form"] = form 
-
-        return render(request, self.template_name, viewData) 
-
- 
-
-    def post(self, request): 
-
-        form = ProductForm(request.POST) 
-
-        if form.is_valid(): 
-            messagebox.showinfo(message='Elemento creado satisfactoriamente')
-            form.save() 
-            return redirect('index')  
-
-        else: 
-
-            viewData = {} 
-
-            viewData["title"] = "Create product" 
-
-            viewData["form"] = form 
-
-            return render(request, self.template_name, viewData)
+      return render(request, self.template_name, viewData)
         
         
 class ProductDeleteView(View):
