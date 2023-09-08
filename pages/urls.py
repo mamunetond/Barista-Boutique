@@ -1,8 +1,14 @@
-from django.urls import path,include
-from .views import HomePageView, AboutPageView, ProductIndexView, ProductCreateView, ProductShowView, ProductDeleteView
-from django.conf.urls.static import static
-from django.conf import settings
+from django.urls import include, path
+
 from . import views
+from .views import (
+    AboutPageView,
+    HomePageView,
+    ProductCreateView,
+    ProductDeleteView,
+    ProductIndexView,
+    ProductShowView,
+)
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
@@ -13,9 +19,8 @@ urlpatterns = [
     path('products/delete/<str:id>', ProductDeleteView.as_view(), name='delete'), 
     path('accounts/', include('accounts.urls')),
     path('<int:product_id>', views.detail, name='detail'),
-    path('<int:product_id>/create', views.createreview,name='createreview'),
-    path('review/<int:review_id>', views.updatereview,name='updatereview'),
-    path('review/<int:review_id>/delete', views.deletereview,name='deletereview'),
+    path('<int:product_id>/create', views.createReview,name='createReview'),
+    path('review/<int:review_id>', views.updateReview,name='updateReview'),
+    path('review/<int:review_id>/delete', views.deleteReview,name='deleteReview'),
 ]
 
-#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
