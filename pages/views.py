@@ -179,7 +179,7 @@ def createReview(request, product_id):
             newReview.user = request.user
             newReview.product = product
             newReview.save()
-            return redirect('show', newReview.product.id)
+            return redirect('detail', newReview.product.id)
         
         except ValueError:
           return render(request,'reviews/createReview.html', {'form':ReviewForm(), 'error':'bad data passed in'})
@@ -190,8 +190,7 @@ def updateReview(request, review_id):
     review = get_object_or_404(Review,pk=review_id,user=request.user)
     if request.method == 'GET':
         form = ReviewForm(instance=review)
-        return render(request, 'updateReview.html', 
-                      {'review': review,'form':form})
+        return render(request, 'updateReview.html', {'review': review,'form':form})
     else:
         try:
             form = ReviewForm(request.POST, instance=review)
