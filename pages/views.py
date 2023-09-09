@@ -14,7 +14,7 @@ from django.views import View
 from django.views.generic import ListView, TemplateView
 
 from .forms import ReviewForm
-from .models import Product, Review
+from .models import Product, Review, Technique
 
 
 class HomePageView(TemplateView): 
