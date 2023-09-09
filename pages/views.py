@@ -25,38 +25,29 @@ class AboutPageView(TemplateView):
   template_name = 'pages/about.html'
   
   def get_context_data(self, **kwargs): 
-      context = super().get_context_data(**kwargs) 
+    context = super().get_context_data(**kwargs) 
 
-      context.update({ 
-          'title': 'Tienda de Café', 
-          'subtitle': '¡Para los verdaderos amantes de Café !', 
-          'description': 'Tu café ideal, a un solo clic', 
-          'author': 'Developed by: Mario Alejandro Muñetón Durango', 
-        }) 
+    context.update({ 
+        'title': 'Tienda de Café', 
+        'subtitle': '¡Para los verdaderos amantes de Café !', 
+        'description': 'Tu café ideal, a un solo clic', 
+        'author': 'Developed by: Mario Alejandro Muñetón Durango', 
+      }) 
 
-      return context
+    return context
     
     
     
 class ProductIndexView(View): 
-
   template_name = 'products/index.html' 
 
   def get(self, request): 
-
     viewData = {} 
-
     viewData['title'] = 'Tienda de Café - El Barista' 
-
     viewData['subtitle'] =  'Productos - Métodos de Filtrado' 
-
     viewData['products'] = Product.objects.all() 
 
-
-
     return render(request, self.template_name, viewData) 
-
- 
 
 class ProductShowView(View): 
   template_name = 'products/show.html'
@@ -113,7 +104,6 @@ class ProductForm(forms.ModelForm):
       raise ValidationError('Price must be greater than zero.') 
 
     return price 
-
 
 class ProductCreateView(View): 
   template_name = 'products/create.html' 
@@ -218,19 +208,88 @@ def deleteReview(request, review_id):
     review.delete()
     return redirect('detail', review.product.id)
         
-        
-        
-        
-       
-       
-        
-        
-        
-        
-    
-       
-    
-    
-    
+# techniques views
+class TechniqueIndexView(View):
+  template_name = 'techniques/index.html'
 
+  def get(self, request):
+      viewData = {}
+      viewData["title"] = "Techniques - Taller 1"
+      viewData["subtitle"] =  "List of techniques"
+      viewData["techniques"] = Technique.objects.all()
+
+      return render(request, self.template_name, viewData)
+  
+class TechniqueShowView(View):
+  template_name = 'techniques/show.html'
+
+  def get(self, request, id):
+    try:
+        technique_id = int(id)
+        if technique_id < 1:
+            raise ValueError("Technique id must be 1 or greater")
+        technique = get_object_or_404(Technique, pk=technique_id)
+    except (ValueError, IndexError):
+        # If the technique id is not valid, redirect to the home page
+        return HttpResponseRedirect(reverse('home'))
+    
+    viewData = {}
+    technique = get_object_or_404(Technique, pk=technique_id)
+    viewData["title"] = technique.title + " - Taller 1"
+    viewData["subtitle"] =  technique.title + " - Technique information"
+    viewData["technique"] = technique
+
+    return render(request, self.template_name, viewData)
+  
+class TechniqueForm(forms.ModelForm):
+  class Meta:
+    model = Technique
+    fields = ['title', 'author', 'category', 'keyword', 'description', 'product_list']
+
+class TechniqueCreateView(View):
+  template_name = 'techniques/create.html'
+
+  def get(self, request):
+    form = TechniqueForm()
+    viewData = {}
+    viewData["title"] = "Create technique"
+    viewData["form"] = form
+    return render(request, self.template_name, viewData)
+
+  def post(self, request):
+    form = TechniqueForm(request.POST)
+    if form.is_valid(): 
+      form.save()
+      viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
+      return render(request, self.template_name, viewData)
+    else:
+      viewData = {}
+      viewData["title"] = "Create technique"
+      viewData["form"] = form
+      return render(request, self.template_name, viewData)
+    
+class TechniqueListView(ListView):
+  model = Technique
+  template_name = 'technique_list.html'
+  context_object_name = 'techniques'  
+
+  def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['title'] = 'Techniques - Taller 1'
+    context['subtitle'] = 'List of techniques'
+    return context
+  
+class TechniqueDeleteView(View):
+  def post(self, request, id):
+    try:
+      technique_id = int(id)
+      if technique_id < 1:
+          raise ValueError("Technique id must be 1 or greater")
+      technique = get_object_or_404(Technique, pk=technique_id)
+    except (ValueError, IndexError):
+      return HttpResponseRedirect(reverse('home'))
+
+    technique.delete()
+    return redirect('techniques')    
+        
       

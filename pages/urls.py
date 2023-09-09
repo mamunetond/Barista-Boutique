@@ -8,6 +8,10 @@ from .views import (
     ProductDeleteView,
     ProductIndexView,
     ProductShowView,
+    TechniqueCreateView,
+    TechniqueDeleteView,
+    TechniqueIndexView,
+    TechniqueShowView,
 )
 
 urlpatterns = [
@@ -22,5 +26,9 @@ urlpatterns = [
     path('<int:product_id>/create', views.createReview,name='createReview'),
     path('review/<int:review_id>', views.updateReview,name='updateReview'),
     path('review/<int:review_id>/delete', views.deleteReview,name='deleteReview'),
+    path('techniques/', TechniqueIndexView.as_view(), name='techniques'),
+    path('techniques/create', TechniqueCreateView.as_view(), name='newTechnique'),
+    path('techniques/<str:id>', TechniqueShowView.as_view(), name='showTechnique'),
+    path('techniques/<str:id>/delete', TechniqueDeleteView.as_view(), name='deleteTechnique')
 ]
 
