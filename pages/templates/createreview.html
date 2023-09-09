@@ -1,29 +1,36 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="card mb-3">
-<div class="row g-0">
-<div>
-<div class="card-body">
-<h5 class="card-title">Add Review for {{
-movie.title }}</h5>
-{% if error %}
-<div class="alert alert-danger mt-3"
-role="alert">
-{{ error }}
-</div>
-{% endif %}
-<p class="card-text">
-<form method="POST">
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit"
-class="btn btn-primary">
-Add Review
-</button>
-</form>
-</p>
-</div>
-</div>
-</div>
+    <div class="row g-0">
+        <div>
+            <div class="card-body">
+                <h5 class="card-title">Add Review for {{ product.title }}</h5>
+                {% if error %}
+                <div class="alert alert-danger mt-3" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+                <p class="card-text">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!-- Itera sobre los campos del formulario -->
+                        {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">
+                            Add Review
+                        </button>
+                    </form>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}

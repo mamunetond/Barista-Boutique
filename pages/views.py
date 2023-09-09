@@ -50,7 +50,7 @@ class ProductIndexView(View):
     return render(request, self.template_name, viewData) 
 
 class ProductShowView(View): 
-  template_name = 'products/show.html'
+  template_name = 'detail.html'
   
   def get(self, request, id): 
     # Check if product id is valid 
@@ -171,7 +171,7 @@ def detail(request, product_id):
 def createReview(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     if request.method == 'GET':
-        return render(request, 'reviews/createReview.html', {'form':ReviewForm(), 'product':product})
+        return render(request, 'createReview.html', {'form':ReviewForm(), 'product':product})
     else:
         try:
             form = ReviewForm(request.POST)
