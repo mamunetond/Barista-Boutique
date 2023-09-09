@@ -1,0 +1,43 @@
+{% extends 'pages/base.html' %}
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Create Technique</div>
+          <div class="card-body">
+            {% if form.errors %}
+                <ul id="errors" class="alert alert-danger list-unstyled">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method="POST" action="{% url 'newTechnique' %}">
+              {% csrf_token %}
+              <input type="text" class="form-control mb-2" placeholder="Enter title" name="title" value="{{form.data.title }}" />
+              <input type="text" class="form-control mb-2" placeholder="Enter author" name="author" value="{{form.data.author }}" />
+              <input type="text" class="form-control mb-2" placeholder="Enter category" name="category" value="{{form.data.category }}" />
+              <input type="text" class="form-control mb-2" placeholder="Enter keyword" name="keyword" value="{{form.data.keyword }}" />
+              <input type="text" class="form-control mb-2" placeholder="Enter description" name="description" value="{{form.data.description }}" />
+              <input type="text" class="form-control mb-2" placeholder="Enter product_list" name="product_list" value="{{form.data.product_list }}" />
+              <input type="submit" class="btn brown-button" value="Create" />
+            </form>
+
+            {% if success_message %}
+              <div class="alert alert-success mt-3">
+                  {{ success_message }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,39 +1,74 @@
-.bg-secondary { 
+.bg-secondary {
+  background-color: #e7cca1 !important;
+}
 
-    background-color: #2c3e50 !important; 
-  
-  } 
-  
-   
-  
-  .copyright { 
-  
-    background-color: #1a252f; 
-  
-  } 
-  
-   
-  
-  .bg-primary { 
-  
-    background-color: #1abc9c !important; 
-  
-  } 
-  
-   
-  
-  nav{ 
-  
-    font-weight: 700; 
-  
-  } 
-  
-   
-  
-  .img-card{ 
-  
-    height: 18vw; 
-  
-    object-fit: cover; 
-  
-  } 
+.copyright {
+  background-color: #e7cca1;
+}
+
+.bg-primary {
+  background-color: #403233 !important;
+}
+
+.brown-color {
+  color: #403233 !important;
+}
+
+.brown-button {
+  background-color: #403233 !important;
+  border-radius: 10px;
+  color: #fffcf7 !important;
+}
+
+.brown-button:hover {
+  transform: scale(1.1);
+  color: #fffcf7 !important;
+}
+
+nav{
+  font-weight: 700;
+}
+
+.img-card{
+  height: 18vw;
+  object-fit: cover;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-container {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.techniques-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.content-buttons {
+  margin: auto;
+  height: inherit;
+}
+
+.footer {
+  background-color: #e7cca1;
+  color: #403233;
+  text-align: center;
+  padding: 10px 0;
+}
