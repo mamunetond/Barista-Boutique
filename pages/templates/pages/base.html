@@ -16,7 +16,7 @@
   <!-- header --> 
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary  py-4">
     <div class="container">
-      <a class="navbar-brand brown-color " href="{% url 'home' %}">Tienda de Café - El Barista</a>
+      <a class="navbar-brand brown-color " href="{% url 'home' %}">Barista Boutique</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -29,6 +29,7 @@
 
           <a class="nav-link active" href="{% url 'techniques'%}">Techniques</a>
           <a class="nav-link active" href="{% url 'newTechnique'%}">Create Technique</a>
+          <a class="nav-link active" href="/admin">Admin</a>
 
           {% if user.is_authenticated %}
             <a class="nav-link" href="{% url 'logoutaccount' %}">Logout ({{user.username}})</a>

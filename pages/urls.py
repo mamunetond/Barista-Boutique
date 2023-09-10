@@ -1,5 +1,5 @@
 from django.urls import include, path
-
+from django.contrib import admin 
 from . import views
 from .views import (
     AboutPageView,
@@ -15,6 +15,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path('admin/', admin.site.urls), 
     path('', HomePageView.as_view(), name='home'),
     path('about/', AboutPageView.as_view(), name='about' ),
     path('products/', ProductIndexView.as_view(), name='index'), 
