@@ -44,7 +44,7 @@ class ProductIndexView(View):
   def get(self, request): 
     viewData = {} 
     viewData['title'] = 'Tienda de Café - El Barista' 
-    viewData['subtitle'] =  'Productos - Métodos de Filtrado' 
+    viewData['subtitle'] =  'Productos' 
     viewData['products'] = Product.objects.all() 
 
     return render(request, self.template_name, viewData) 

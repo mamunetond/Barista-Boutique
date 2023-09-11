@@ -1,0 +1,69 @@
+.brown-button {
+  background-color: #403233;
+  border-radius: 10px;
+  color: #fffcf7;
+}
+
+.brown-button:hover {
+  transform: scale(1.1);
+  color: #fffcf7 ;
+}
+
+a.button {
+  margin: 20px;
+}
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(250, 224, 176, 0.572),
+   7px 7px 20px 0px #e7cca1,
+   4px 4px 5px 0px #e7cca1;
+  outline: none;
+}
+
+.btn-16 {
+  border-radius: 10px;
+  border: none;
+  color: #403233;
+}
+.btn-16:after {
+  border-radius: 10px;
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  direction: rtl;
+  z-index: -1;
+  box-shadow:
+   -7px -7px 20px 0px #e7cca1,
+   -4px -4px 5px 0px #e7cca1,
+   7px 7px 20px 0px #e7cca1,
+   4px 4px 5px 0px #e7cca1;
+  transition: all 0.3s ease;
+}
+.btn-16:hover {
+  border-radius: 10px;
+  color: #000;
+}
+.btn-16:hover:after {
+  border-radius: 10px;
+  left: auto;
+  right: 0;
+  width: 100%;
+}
+.btn-16:active {
+  border-radius: 10px;
+  top: 2px;
+}

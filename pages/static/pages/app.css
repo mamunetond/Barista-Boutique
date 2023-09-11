@@ -1,3 +1,6 @@
+@import "header.css";
+@import "buttons.css";
+
 .bg-secondary {
   background-color: #e7cca1 !important;
 }
@@ -7,22 +10,16 @@
 }
 
 .bg-primary {
-  background-color: #403233 !important;
+  background-color: #40323376 !important;
 }
 
 .brown-color {
-  color: #403233 !important;
+  color: #403233;
 }
 
-.brown-button {
-  background-color: #403233 !important;
-  border-radius: 10px;
-  color: #fffcf7 !important;
-}
-
-.brown-button:hover {
-  transform: scale(1.1);
-  color: #fffcf7 !important;
+.subtitle {
+  color: #403233;
+  margin-bottom: 1rem;
 }
 
 nav{
@@ -52,7 +49,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
+  margin-bottom: 2rem;
 }
 
 .techniques-container {
