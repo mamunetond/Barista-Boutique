@@ -50,7 +50,7 @@ class ProductIndexView(View):
     return render(request, self.template_name, viewData) 
 
 class ProductShowView(View): 
-  template_name = 'products/show.html'
+  template_name = 'detail.html'
   
   def get(self, request, id): 
     # Check if product id is valid 
@@ -171,7 +171,7 @@ def detail(request, product_id):
 def createReview(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     if request.method == 'GET':
-        return render(request, 'reviews/createReview.html', {'form':ReviewForm(), 'product':product})
+        return render(request, 'createReview.html', {'form':ReviewForm(), 'product':product})
     else:
         try:
             form = ReviewForm(request.POST)
@@ -179,7 +179,7 @@ def createReview(request, product_id):
             newReview.user = request.user
             newReview.product = product
             newReview.save()
-            return redirect('show', newReview.product.id)
+            return redirect('detail', newReview.product.id)
         
         except ValueError:
           return render(request,'reviews/createReview.html', {'form':ReviewForm(), 'error':'bad data passed in'})
@@ -190,8 +190,7 @@ def updateReview(request, review_id):
     review = get_object_or_404(Review,pk=review_id,user=request.user)
     if request.method == 'GET':
         form = ReviewForm(instance=review)
-        return render(request, 'updateReview.html', 
-                      {'review': review,'form':form})
+        return render(request, 'updateReview.html', {'review': review,'form':form})
     else:
         try:
             form = ReviewForm(request.POST, instance=review)

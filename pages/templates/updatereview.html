@@ -15,7 +15,15 @@
         <p class="card-text">
           <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+            <div class="mb-3">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}
+                <span class="helptext">{{ field.help_text|safe }}</span>
+              {% endif %}
+            </div>
+            {% endfor %}
             <button type="submit" class="btn btn-primary">
               Update Review
             </button>
