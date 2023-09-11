@@ -1,3 +1,6 @@
+@import "header.css";
+@import "buttons.css";
+
 .bg-secondary {
   background-color: #e7cca1 !important;
 }
@@ -7,22 +10,11 @@
 }
 
 .bg-primary {
-  background-color: #403233 !important;
+  background-color: #40323376 !important;
 }
 
 .brown-color {
-  color: #403233 !important;
-}
-
-.brown-button {
-  background-color: #403233 !important;
-  border-radius: 10px;
-  color: #fffcf7 !important;
-}
-
-.brown-button:hover {
-  transform: scale(1.1);
-  color: #fffcf7 !important;
+  color: #403233;
 }
 
 nav{

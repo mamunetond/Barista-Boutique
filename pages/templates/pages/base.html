@@ -24,11 +24,11 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto brown-color">
           <a class="nav-link active brown-button" href="{% url 'home'%}">Home</a> 
-          <a class="nav-link active" href="{% url 'index'%}">Products</a>
+          {% comment %} <a class="nav-link active" href="{% url 'index'%}">Products</a>
           <a class="nav-link active" href="{% url 'form'%}">Create Product</a>
 
           <a class="nav-link active" href="{% url 'techniques'%}">Techniques</a>
-          <a class="nav-link active" href="{% url 'newTechnique'%}">Create Technique</a>
+          <a class="nav-link active" href="{% url 'newTechnique'%}">Create Technique</a> {% endcomment %}
 
           {% if user.is_authenticated %}
             <a class="nav-link" href="{% url 'logoutaccount' %}">Logout ({{user.username}})</a>
@@ -41,11 +41,11 @@
     </div>
   </nav>
 
-  {% comment %} <header class="masthead bg-primary text-white text-center py-4">
-    <div class="container d-flex align-items-center flex-column">
-      <h2>{% block header_title %}'Taler 1 by Santiago Ospina Idrobo'{% endblock %}</h2>
-    </div>
-  </header> {% endcomment %}
+  <!-- header --> 
+  <div class="frame">
+    <a class="nav-link button custom-btn btn-16" href="{% url 'index'%}">Products</a>
+    <a class="nav-link button custom-btn btn-16" href="{% url 'techniques'%}">Techniques</a>
+  </div>
   <!-- header --> 
  
   <div class="content-container">
@@ -60,8 +60,8 @@
         <div class="container">
           <small class="brown-color">
             Copyright - <a class="text-reset fw-bold text-decoration-none" target="_blank"
-              href="https://twitter.com/danielgarax">
-              Santiago Ospina Idrobo
+              href="#">
+              Barista Boutique
             </a>
           </small>
         </div>
