@@ -22,7 +22,7 @@
 <div class="techniques-container">
   {% for technique in techniques %}
     <div class="card">
-      <a class="card-link" href="{% url 'detail' id=technique.id %}">
+      <a class="card-link" href="{% url 'showTechnique' id=technique.id %}">
         <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="card-img-top img-card">
         <div class="card-body text-center">
           <a href="{% url 'showTechnique' id=technique.id %}"
