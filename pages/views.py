@@ -50,7 +50,7 @@ class ProductIndexView(View):
     return render(request, self.template_name, viewData) 
 
 class ProductShowView(View): 
-  template_name = 'detail.html'
+  template_name = 'products/detail.html'
   
   def get(self, request, id): 
     # Check if product id is valid 
