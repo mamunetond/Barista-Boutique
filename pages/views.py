@@ -50,7 +50,7 @@ class ProductIndexView(View):
     return render(request, self.template_name, viewData) 
 
 class ProductShowView(View): 
-  template_name = 'products/detail.html'
+  template_name = 'detail.html'
   
   def get(self, request, id): 
     # Check if product id is valid 
@@ -75,7 +75,10 @@ class ProductShowView(View):
 
     viewData['subtitle'] =  product.tittle + ' - Product information' 
 
-    viewData['product'] = product 
+    viewData['product'] = product
+
+    reviews = Review.objects.filter(product=product)
+    viewData['reviews'] = reviews 
 
     return render(request, self.template_name, viewData)
     
@@ -164,8 +167,7 @@ class ProductDeleteView(View):
 def detail(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     reviews = Review.objects.filter(product = product)
-    return render(request, 'detail.html', 
-                  {'product':product, 'reviews': reviews})
+    return render(request, 'detail.html', {'product':product, 'reviews': reviews})
 
 @login_required    
 def createReview(request, product_id):
