@@ -69,3 +69,10 @@ body {
   text-align: center;
   padding: 10px 0;
 }
+
+.card-link:hover {
+  /* scale transition */
+  scale: 1.05;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
