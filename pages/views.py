@@ -48,6 +48,16 @@ class ProductIndexView(View):
     viewData['products'] = Product.objects.all() 
 
     return render(request, self.template_name, viewData) 
+  
+  def search(self,request):
+    product_tittle = Product.tittle
+    searchTerm = request.GET.get('searchProduct')
+    if searchTerm:
+        products = Product.objects.filter(product_tittle=searchTerm)
+    else:
+      products = Product.objects.all()
+      
+    return render(request, self.template_name, {'searchTerm':searchTerm, 'products': products})
 
 class ProductShowView(View): 
   template_name = 'detail.html'
