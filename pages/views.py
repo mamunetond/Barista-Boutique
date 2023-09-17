@@ -200,18 +200,19 @@ def createReview(request, product_id):
 @login_required
 def updateReview(request, review_id):
     review = get_object_or_404(Review,pk=review_id,user=request.user)
-    if request.method == 'GET':
-        form = ReviewForm(instance=review)
-        return render(request, 'updateReview.html', {'review': review,'form':form})
-    else:
-        try:
-            form = ReviewForm(request.POST, instance=review)
-            form.save()
-            return redirect('detail', id)
-        except ValueError:
-            return render(request, 'updateReview.html',
-             {'review': review,'form':form,'error':'Bad data in form'})
-            
+    if request.user == review.user:
+      if request.method == 'GET':
+          form = ReviewForm(instance=review)
+          return render(request, 'updateReview.html', {'review': review,'form':form})
+      else:
+          try:
+              form = ReviewForm(request.POST, instance=review)
+              form.save()
+              return redirect('detail', id)
+          except ValueError:
+              return render(request, 'updateReview.html',
+              {'review': review,'form':form,'error':'Bad data in form'})
+              
 
 @login_required
 def deleteReview(request, review_id):
