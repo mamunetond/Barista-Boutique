@@ -20,17 +20,14 @@
 </div>
 
 
-<div class="search-container">
-  <form action="">
-    <div class="mb-3">
-      <label class="form-label">Search for Product:</label>
-      <input type="text" name="searchProduct" class="form-control" />
+<div class="search-container text-center my-4">
+  <p class="mt-2">Searching for: {{ searchTerm }}</p>
+  <form action="" class="d-flex justify-content-center">
+    <div class="input-group">
+      <input type="text" name="searchProduct" class="form-control" placeholder="Search for Product..." />
+      <button type="submit" class="btn brown-button">Search</button>
     </div>
-    <button type="submit" class="btn btn-primary">
-      Search
-    </button>
   </form>
-  <p>Searching for: {{ searchTerm }}</p>
 </div>
 
 <div class="techniques-container">
