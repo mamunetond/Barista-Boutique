@@ -6,7 +6,8 @@
 
 .brown-button:hover {
   transform: scale(1.1);
-  color: #fffcf7 ;
+  color: #fffcf7;
+  background-color: #403233 !important;
 }
 
 a.button {

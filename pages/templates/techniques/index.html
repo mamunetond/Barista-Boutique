@@ -12,7 +12,7 @@
           <h1 class="text-center subtitle">{{subtitle}}</h1>
         </div> 
         <div class="justify-content-end">
-          <a href="{% url 'newTechnique' %}" class="btn brown-button">Crear</a>
+          <a class="btn brown-button" href="{% url 'newTechnique'%}">Crear</a> 
         </div>
       </div>
     </div>
@@ -20,7 +20,6 @@
 </div>
 
 <div class="search-container text-center my-4">
-  <p class="mt-2">Searching for: {{ searchTerm }}</p>
   <form action="" class="d-flex justify-content-center">
     <div class="input-group">
       <input type="text" name="searchProduct" class="form-control" placeholder="Search for Technique..." />
