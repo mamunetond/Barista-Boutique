@@ -20,7 +20,6 @@ from .models import Product, Review, Technique
 class HomePageView(TemplateView): 
   template_name = 'pages/home.html'
     
-
 class AboutPageView(TemplateView):
   template_name = 'pages/about.html'
   
@@ -28,36 +27,29 @@ class AboutPageView(TemplateView):
     context = super().get_context_data(**kwargs) 
 
     context.update({ 
-        'title': 'Tienda de Café', 
+        'tittle': 'Tienda de Café', 
         'subtitle': '¡Para los verdaderos amantes de Café !', 
         'description': 'Tu café ideal, a un solo clic', 
         'author': 'Developed by: Mario Alejandro Muñetón Durango', 
       }) 
 
-    return context
+    return context  
     
-    
-    
-class ProductIndexView(View): 
-  template_name = 'products/index.html' 
+class ProductIndexView(View):
+  template_name = 'products/index.html'
 
-  def get(self, request): 
-    viewData = {} 
-    viewData['title'] = 'Tienda de Café - El Barista' 
-    viewData['subtitle'] =  'Productos' 
-    viewData['products'] = Product.objects.all() 
-
-    return render(request, self.template_name, viewData) 
-  
-  def search(self,request):
-    product_tittle = Product.tittle
-    searchTerm = request.GET.get('searchProduct')
-    if searchTerm:
-        products = Product.objects.filter(product_tittle=searchTerm)
+  def get(self, request):
+    viewData = {}
+    viewData["title"] = "Tienda de Café - El Barista"
+    viewData["subtitle"] =  "Productos"
+    
+    search_query = request.GET.get('searchProduct')
+    if search_query:
+        viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
     else:
-      products = Product.objects.all()
-      
-    return render(request, self.template_name, {'searchTerm':searchTerm, 'products': products})
+        viewData["products"] = Product.objects.all()
+
+    return render(request, self.template_name, viewData)
 
 class ProductShowView(View): 
   template_name = 'detail.html'
@@ -81,7 +73,7 @@ class ProductShowView(View):
 
     product = get_object_or_404(Product, pk=product_id) 
 
-    viewData['title'] = product.tittle + ' - Tienda de Café - El barista' 
+    viewData['tittle'] = product.tittle + ' - Tienda de Café - El barista' 
 
     viewData['subtitle'] =  product.tittle + ' - Product information' 
 
@@ -104,7 +96,6 @@ class ProductListView(ListView):
 
     return context    
     
-
 class ProductForm(forms.ModelForm): 
   class Meta: 
     model = Product 
@@ -144,8 +135,7 @@ class ProductCreateView(View):
       viewData['form'] = form 
 
       return render(request, self.template_name, viewData)
-        
-        
+             
 class ProductDeleteView(View):
     
     template_name = 'products/delete.html'
@@ -173,7 +163,6 @@ class ProductDeleteView(View):
         product.delete()
         return redirect('index')
     
-
 def detail(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     reviews = Review.objects.filter(product = product)
@@ -225,12 +214,17 @@ class TechniqueIndexView(View):
   template_name = 'techniques/index.html'
 
   def get(self, request):
-      viewData = {}
-      viewData["title"] = "Techniques - Taller 1"
-      viewData["subtitle"] =  "List of techniques"
-      viewData["techniques"] = Technique.objects.all()
+    viewData = {}
+    viewData["title"] = "Techniques - Taller 1"
+    viewData["subtitle"] =  "List of techniques"
+    
+    search_query = request.GET.get('searchProduct')
+    if search_query:
+        viewData["techniques"] = Technique.objects.filter(title__icontains=search_query)
+    else:
+        viewData["techniques"] = Technique.objects.all()
 
-      return render(request, self.template_name, viewData)
+    return render(request, self.template_name, viewData)
   
 class TechniqueShowView(View):
   template_name = 'techniques/show.html'
