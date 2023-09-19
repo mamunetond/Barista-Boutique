@@ -52,7 +52,7 @@ class ProductIndexView(View):
     return render(request, self.template_name, viewData)
 
 class ProductShowView(View): 
-  template_name = 'detail.html'
+  template_name = 'products/detail.html'
   
   def get(self, request, id): 
     # Check if product id is valid 
@@ -166,13 +166,13 @@ class ProductDeleteView(View):
 def detail(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     reviews = Review.objects.filter(product = product)
-    return render(request, 'detail.html', {'product':product, 'reviews': reviews})
+    return render(request, 'products/detail.html', {'product':product, 'reviews': reviews})
 
 @login_required    
 def createReview(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
     if request.method == 'GET':
-        return render(request, 'createReview.html', {'form':ReviewForm(), 'product':product})
+        return render(request, 'reviews/create.html', {'form':ReviewForm(), 'product':product})
     else:
         try:
             form = ReviewForm(request.POST)
@@ -183,7 +183,7 @@ def createReview(request, product_id):
             return redirect('detail', newReview.product.id)
         
         except ValueError:
-          return render(request,'createReview.html', {'form':ReviewForm(), 'error':'bad data passed in'})
+          return render(request,'reviews/create.html', {'form':ReviewForm(), 'error':'bad data passed in'})
         
         
 @login_required
@@ -192,14 +192,14 @@ def updateReview(request, review_id):
     if request.user == review.user:
       if request.method == 'GET':
           form = ReviewForm(instance=review)
-          return render(request, 'updateReview.html', {'review': review,'form':form})
+          return render(request, 'reviews/update.html', {'review': review,'form':form})
       else:
           try:
               form = ReviewForm(request.POST, instance=review)
               form.save()
               return redirect('detail', id)
           except ValueError:
-              return render(request, 'updateReview.html',
+              return render(request, 'reviews/update.html',
               {'review': review,'form':form,'error':'Bad data in form'})
               
 
