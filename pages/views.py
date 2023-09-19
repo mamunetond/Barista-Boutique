@@ -183,7 +183,7 @@ def createReview(request, product_id):
             return redirect('detail', newReview.product.id)
         
         except ValueError:
-          return render(request,'reviews/createReview.html', {'form':ReviewForm(), 'error':'bad data passed in'})
+          return render(request,'createReview.html', {'form':ReviewForm(), 'error':'bad data passed in'})
         
         
 @login_required
