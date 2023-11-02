@@ -6,14 +6,13 @@ class Product(models.Model):
   provider = models.CharField(max_length=255)
   category = models.CharField(max_length=255)
   keyword = models.CharField(max_length=255)
+  image = models.ImageField(upload_to='images/', null=True)
   price = models.IntegerField()
   stock = models.IntegerField()
   description = models.CharField(max_length=1200)
   created_at_product = models.DateTimeField(auto_now=True)
   updated_at_product = models.DateTimeField(auto_now=True)
   url = models.URLField(blank=True)
-    
-    
 
 class Review(models.Model):
   text = models.CharField(max_length=100)

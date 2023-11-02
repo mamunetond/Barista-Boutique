@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary_storage
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +34,7 @@ SECRET_KEY = 'django-insecure-t%l*yjf!egfy^w9+43q8mm-=3vvg&%asb_#l_y0=t+$npt)&k-
 DEBUG = True
 
 # ALLOWED_HOSTS = ['34.71.201.195']
-ALLOWED_HOSTS = ['34.172.155.149']
+ALLOWED_HOSTS = ['34.172.155.149', '127.0.0.1']
 
 
 # Application definition
@@ -44,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
     'accounts',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +136,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'loginaccount'
+
+CLOUDINARY_STORAGE = {
+  'CLOUD_NAME': 'dbyp3pr3d',
+  'API_KEY': os.environ.get('CLOUDINARY_KEY'),
+  'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
