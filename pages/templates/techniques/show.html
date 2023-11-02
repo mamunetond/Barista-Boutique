@@ -2,6 +2,8 @@
 {% block title %} {{title}} {% endblock %}
 {% block header_title %} {{subtitle}} {% endblock %}
 
+{% load i18n %} 
+
 {% block content %}
 <div class="card mb-3">
   <div class="row g-0">
@@ -15,17 +17,17 @@
         </h2>
         <div class="flex">
           <p style="display: inline; margin-right: 20px;">
-            <strong>Author: </strong>{{technique.author}}
+            <strong>{% trans "Author: " %} </strong>{{technique.author}}
           </p>
           <p style="display: inline;">
-            <strong>Category: </strong>{{technique.category}}
+            <strong>{% trans "Category: " %} </strong>{{technique.category}}
           </p>
         </div>
         <p>
-          <strong>Description: </strong>{{technique.description}}
+          <strong>{% trans "Description: " %}</strong>{{technique.description}}
         </p>
         <p>
-          <strong>Products that you need: </strong>{{technique.product_list}}
+          <strong>{% trans "Products that you need: " %} </strong>{{technique.product_list}}
         </p>
       </div>
     </div>
@@ -34,7 +36,7 @@
 <div class="d-flex justify-content-center">
   <form action="{% url 'deleteTechnique' technique.id %}" method="POST">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this technique?')">Delete</button>
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this technique?')">{% trans "Delete" %}</button>
   </form>
 </div>
 

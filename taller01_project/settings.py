@@ -29,8 +29,7 @@ SECRET_KEY = 'django-insecure-t%l*yjf!egfy^w9+43q8mm-=3vvg&%asb_#l_y0=t+$npt)&k-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['34.71.201.195']
-ALLOWED_HOSTS = ['34.172.155.149']
+ALLOWED_HOSTS = ['34.170.218.230']
 
 
 # Application definition
@@ -49,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -118,6 +118,22 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+from django.utils.translation import gettext as _
+
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Spanish')),
+]
+
+
+USE_L10N = True
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

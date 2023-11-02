@@ -1,11 +1,12 @@
 {% extends 'pages/base.html' %}
+{% load i18n %} 
 
 {% block content %}
 <div class="card mb-3">
     <div class="row g-0">
         <div>
             <div class="card-body">
-                <h5 class="card-title">Add Review for {{ product.title }}</h5>
+                <h5 class="card-title"> {% trans "Add Review for" %}{{ product.title }}</h5>
                 {% if error %}
                 <div class="alert alert-danger mt-3" role="alert">
                     {{ error }}
@@ -25,7 +26,7 @@
                         </div>
                         {% endfor %}
                         <button type="submit" class="btn btn-primary">
-                            Add Review
+                            {% trans "Add Review" %}
                         </button>
                     </form>
                 </p>

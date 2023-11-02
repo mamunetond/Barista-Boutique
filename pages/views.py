@@ -15,7 +15,18 @@ from django.views.generic import ListView, TemplateView
 
 from .forms import ReviewForm
 from .models import Product, Review, Technique
+from django.utils.translation import gettext as _
 
+
+from django.shortcuts import redirect
+from django.utils.translation import activate
+from django.conf import settings
+
+
+def change_language(request, language_code):
+    if language_code in [lang[0] for lang in settings.LANGUAGES]:
+        activate(language_code)
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 class HomePageView(TemplateView): 
   template_name = 'pages/home.html'
