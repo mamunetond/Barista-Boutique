@@ -15,6 +15,7 @@ from django.views.generic import ListView, TemplateView
 
 from .forms import ReviewForm
 from .models import Product, Review, Technique
+from cloudinary import uploader
 
 
 class HomePageView(TemplateView): 
@@ -112,30 +113,38 @@ class ProductForm(forms.ModelForm):
 
         return price
 
-class ProductCreateView(View): 
-  template_name = 'products/create.html' 
+class ProductCreateView(View):
+  template_name = 'products/create.html'
 
-  def get(self, request): 
-    form = ProductForm() 
+  def get(self, request):
+    form = ProductForm()
+    viewData = {}
+    viewData["title"] = "Create product"
+    viewData["form"] = form
+    return render(request, self.template_name, viewData)
 
-    viewData = {} 
-    viewData['title'] = 'Create product' 
-    viewData['form'] = form 
+  def post(self, request):
+    form = ProductForm(request.POST, request.FILES)
 
-    return render(request, self.template_name, viewData) 
+    if form.is_valid():
+      product = form.save(commit=False)
 
-  def post(self, request): 
-    form = ProductForm(request.POST) 
+      print('product to save', product)
 
-    if form.is_valid(): 
-      messagebox.showinfo(message='Elemento creado satisfactoriamente')
-      form.save() 
-      return redirect('index')  
+      # Check if image is provided
+      image = request.FILES.get('image')
+      if image:
+          # result = uploader.upload(image)
+          # product.image = result['secure_url']
+          pass
 
-    else: 
-      viewData = {} 
-      viewData['title'] = 'Create product' 
-      viewData['form'] = form 
+      product.save()
+      return redirect('index')
+      # return None
+    else:
+      viewData = {}
+      viewData['title'] = 'Create product'
+      viewData['form'] = form
 
       return render(request, self.template_name, viewData)
              
