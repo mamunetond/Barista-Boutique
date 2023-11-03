@@ -6,7 +6,7 @@ class Product(models.Model):
   provider = models.CharField(max_length=255)
   category = models.CharField(max_length=255)
   keyword = models.CharField(max_length=255)
-  image = models.ImageField(upload_to='images/', null=True)
+  image = models.ImageField(upload_to='development', null=True)
   price = models.IntegerField()
   stock = models.IntegerField()
   description = models.CharField(max_length=1200)
