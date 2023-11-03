@@ -97,17 +97,20 @@ class ProductListView(ListView):
     return context    
     
 class ProductForm(forms.ModelForm): 
-  class Meta: 
-    model = Product 
-    fields = '__all__' 
+  class Meta:
+    model = Product
+    fields = '__all__'
 
-  def clean_price(self): 
-    price = self.cleaned_data.get('price') 
+    # Use FileInput widget for image field
+    image = forms.ImageField(required=False, widget=forms.FileInput)
 
-    if price is not None and price <= 0: 
-      raise ValidationError('Price must be greater than zero.') 
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
 
-    return price 
+        if price is not None and price <= 0:
+            raise ValidationError('Price must be greater than zero.')
+
+        return price
 
 class ProductCreateView(View): 
   template_name = 'products/create.html' 
