@@ -51,13 +51,9 @@ class ProductIndexView(View):
     else:
         products = Product.objects.all()
         response = []
-        # get the imate url from cloudinary
         for product in products:
             product_with_image = {}
             if product.image:
-              print ('product.tittle', product.tittle)
-              print ('product.image', product.image)
-
               result = uploader.upload(product.image,
                                         cloud_name = 'dbyp3pr3d',
                                         api_key = os.environ.get('CLOUDINARY_KEY'),
@@ -65,8 +61,6 @@ class ProductIndexView(View):
                                         secure = True,
                                         )
               product.image = result['secure_url']
-              # product.save()
-              viewData["product_image"] = product.image
               product_with_image['product'] = product
               product_with_image['image'] = product.image
               response.append(product_with_image)
@@ -75,14 +69,6 @@ class ProductIndexView(View):
             else:
               product_with_image['product'] = product
               response.append(product_with_image)
-               
-              
-        #       product.image = uploader(product.image)
-        #       print('product.image', product.image)
-        # last_product = products.last()
-        # print('last product image', last_product.image)
-
-        # viewData["products"] = Product.objects.all()
         print('response', response)
         viewData["products"] = response
 
@@ -95,27 +81,40 @@ class ProductShowView(View):
     # Check if product id is valid 
     try: 
       product_id = int(id) 
-
       if product_id < 1: 
         raise ValueError('Product id must be 1 or greater') 
 
       product = get_object_or_404(Product, pk=product_id) 
-
     except (ValueError, IndexError): 
-
       # If the product id is not valid, redirect to the home page 
       return HttpResponseRedirect(reverse('home')) 
     
     viewData = {} 
-
     product = get_object_or_404(Product, pk=product_id) 
+    response = None
+    product_with_image = {}
+
+    if product.image:
+      result = uploader.upload(product.image,
+                              cloud_name = 'dbyp3pr3d',
+                              api_key = os.environ.get('CLOUDINARY_KEY'),
+                              api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                              secure = True,
+                              )
+
+      product.image = result['secure_url']
+      product_with_image['detail'] = product
+      product_with_image['image'] = product.image
+      response = product_with_image
+
+    else:
+      product_with_image['detail'] = product
+      response = product_with_image
+
 
     viewData['tittle'] = product.tittle + ' - Tienda de Café - El barista' 
-
     viewData['subtitle'] =  product.tittle + ' - Product information' 
-
-    viewData['product'] = product
-
+    viewData['product'] = response
     reviews = Review.objects.filter(product=product)
     viewData['reviews'] = reviews 
 

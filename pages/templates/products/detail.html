@@ -3,32 +3,36 @@
 <div class="card mb-3">
   <div class="row g-0">
     <div class="col-md-4">
-      <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="img-fluid rounded-start">
+      {% if product.image %}
+        <img src="{{ product.image }}" class="img-fluid rounded-start">
+      {% else %}
+        <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="img-fluid rounded-start">
+      {% endif %}
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h2 class="card-title">
-           {{product.title}}
+           {{product.detail.title}}
         </h2>
         <div class="flex">
           <p style="display: inline; margin-right: 20px;">
-            <strong>Provider: </strong>{{product.provider}}
+            <strong>Provider: </strong>{{product.detail.provider}}
           </p>
           <p style="display: inline;">
-            <strong>stock: </strong>{{product.stock}}
+            <strong>stock: </strong>{{product.detail.stock}}
           </p>
         </div>
         <p>
-          <strong>Description: </strong>{{product.description}}
+          <strong>Description: </strong>{{product.detail.description}}
         </p>
         <p class="card-text">
           {% if movie.url %}
-            <a href="{{ product.url }}" class="btn btn-primary">
+            <a href="{{ product.detail.url }}" class="btn btn-primary">
               Product Link
             </a>
           {% endif %}
           {% if user.is_authenticated %}
-          <a href="{% url 'createReview' product.id %}" 
+          <a href="{% url 'createReview' product.detail.id %}" 
             class="btn btn-primary">
             Add Review
           </a>
@@ -64,7 +68,7 @@
   </div>
 </div>
 <div class="d-flex justify-content-center">
-  <form action="{% url 'delete' product.id %}" method="POST">
+  <form action="{% url 'delete' product.detail.id %}" method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
   </form>
