@@ -16,6 +16,7 @@ from django.views.generic import ListView, TemplateView
 from .forms import ReviewForm
 from .models import Product, Review, Technique
 from cloudinary import uploader
+import os
 
 
 class HomePageView(TemplateView): 
@@ -48,7 +49,42 @@ class ProductIndexView(View):
     if search_query:
         viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
     else:
-        viewData["products"] = Product.objects.all()
+        products = Product.objects.all()
+        response = []
+        # get the imate url from cloudinary
+        for product in products:
+            product_with_image = {}
+            if product.image:
+              print ('product.tittle', product.tittle)
+              print ('product.image', product.image)
+
+              result = uploader.upload(product.image,
+                                        cloud_name = 'dbyp3pr3d',
+                                        api_key = os.environ.get('CLOUDINARY_KEY'),
+                                        api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                        secure = True,
+                                        )
+              product.image = result['secure_url']
+              # product.save()
+              viewData["product_image"] = product.image
+              product_with_image['product'] = product
+              product_with_image['image'] = product.image
+              response.append(product_with_image)
+
+              print('product.image', product.image)
+            else:
+              product_with_image['product'] = product
+              response.append(product_with_image)
+               
+              
+        #       product.image = uploader(product.image)
+        #       print('product.image', product.image)
+        # last_product = products.last()
+        # print('last product image', last_product.image)
+
+        # viewData["products"] = Product.objects.all()
+        print('response', response)
+        viewData["products"] = response
 
     return render(request, self.template_name, viewData)
 
