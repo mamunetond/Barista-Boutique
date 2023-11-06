@@ -47,7 +47,29 @@ class ProductIndexView(View):
     
     search_query = request.GET.get('searchProduct')
     if search_query:
-        viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
+        print('query')
+        products = Product.objects.filter(tittle__icontains=search_query)
+        response = []
+
+        for product in products:
+          product_with_image = {}
+          if product.image:
+            result = uploader.upload(product.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+            product.image = result['secure_url']
+            product_with_image['product'] = product
+            product_with_image['image'] = product.image
+            response.append(product_with_image)
+          else:
+            product_with_image['product'] = product
+            response.append(product_with_image)
+        viewData["products"] = response
+
+        # viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
     else:
         products = Product.objects.all()
         response = []
@@ -111,7 +133,6 @@ class ProductShowView(View):
       product_with_image['detail'] = product
       response = product_with_image
 
-
     viewData['tittle'] = product.tittle + ' - Tienda de Café - El barista' 
     viewData['subtitle'] =  product.tittle + ' - Product information' 
     viewData['product'] = response
@@ -163,8 +184,6 @@ class ProductCreateView(View):
 
     if form.is_valid():
       product = form.save(commit=False)
-
-      print('product to save', product)
 
       # Check if image is provided
       image = request.FILES.get('image')
@@ -269,7 +288,26 @@ class TechniqueIndexView(View):
     if search_query:
         viewData["techniques"] = Technique.objects.filter(title__icontains=search_query)
     else:
-        viewData["techniques"] = Technique.objects.all()
+        techniques = Technique.objects.all()
+        response = []
+        for technique in techniques:
+          technique_with_image = {}
+          if technique.image:
+            result = uploader.upload(technique.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+             
+            technique.image = result['secure_url']
+            technique_with_image['technique'] = technique
+            technique_with_image['image'] = technique.image
+            response.append(technique_with_image)
+          else:
+            technique_with_image['technique'] = technique
+            response.append(technique_with_image)
+        viewData["techniques"] = response
 
     return render(request, self.template_name, viewData)
   
@@ -288,16 +326,39 @@ class TechniqueShowView(View):
     
     viewData = {}
     technique = get_object_or_404(Technique, pk=technique_id)
+
+    response = None
+    technique_with_image = {}
+
+    if technique.image:
+      result = uploader.upload(technique.image,
+                                cloud_name = 'dbyp3pr3d',
+                                api_key = os.environ.get('CLOUDINARY_KEY'),
+                                api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                secure = True,
+                                )
+      
+      technique.image = result['secure_url']
+      technique_with_image['detail'] = technique
+      technique_with_image['image'] = technique.image
+      response = technique_with_image
+    else:
+      technique_with_image['detail'] = technique
+      response = technique_with_image
+
     viewData["title"] = technique.title + " - Taller 1"
     viewData["subtitle"] =  technique.title + " - Technique information"
-    viewData["technique"] = technique
+    viewData["technique"] = response
 
     return render(request, self.template_name, viewData)
   
 class TechniqueForm(forms.ModelForm):
   class Meta:
     model = Technique
-    fields = ['title', 'author', 'category', 'keyword', 'description', 'product_list']
+    # fields = ['title', 'author', 'category', 'keyword', 'description', 'product_list']
+    fields = '__all__'
+
+    image = forms.ImageField(required=False, widget=forms.FileInput)
 
 class TechniqueCreateView(View):
   template_name = 'techniques/create.html'
@@ -312,7 +373,14 @@ class TechniqueCreateView(View):
   def post(self, request):
     form = TechniqueForm(request.POST)
     if form.is_valid(): 
-      form.save()
+      technique = form.save()
+
+      image = request.FILES.get('image')
+      if image:
+         pass
+      
+      technique.save()
+
       viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
       return render(request, self.template_name, viewData)
     else:

@@ -29,6 +29,7 @@ class Technique(models.Model):
   author = models.TextField()
   category = models.TextField()
   keyword = models.TextField()
+  image = models.ImageField(upload_to='development', null=True)
   description = models.TextField()
   product_list = models.TextField()
   created_at = models.DateTimeField(auto_now_add=True)
