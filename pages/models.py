@@ -6,14 +6,13 @@ class Product(models.Model):
   provider = models.CharField(max_length=255)
   category = models.CharField(max_length=255)
   keyword = models.CharField(max_length=255)
+  image = models.ImageField(upload_to='development', null=True)
   price = models.IntegerField()
   stock = models.IntegerField()
   description = models.CharField(max_length=1200)
   created_at_product = models.DateTimeField(auto_now=True)
   updated_at_product = models.DateTimeField(auto_now=True)
   url = models.URLField(blank=True)
-    
-    
 
 class Review(models.Model):
   text = models.CharField(max_length=100)
@@ -30,6 +29,7 @@ class Technique(models.Model):
   author = models.TextField()
   category = models.TextField()
   keyword = models.TextField()
+  image = models.ImageField(upload_to='development', null=True)
   description = models.TextField()
   product_list = models.TextField()
   created_at = models.DateTimeField(auto_now_add=True)

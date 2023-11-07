@@ -4,7 +4,6 @@
 {% load i18n %} 
 
 {% block content %}
-
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -30,16 +29,21 @@
 </div>
 
 <div class="techniques-container">
-  {% for product in products %}
+  {% for product_response in products %}
+  {% comment %} print product on the console {% endcomment %}
   <div class="card">
-    <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="card-img-top img-card">
+    {% if product_response.image %}
+      <img src="{{ product_response.image }}" class="card-img-top img-card">
+    {% else %}
+      <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="card-img-top img-card">
+    {% endif %}
     <div class="card-body text-center">
-      <a href="{% url 'detail' id=product.id %}"
-        class="btn bg-primary text-white">{{product.tittle}}
+      <a href="{% url 'detail' id=product_response.product.id %}"
+        class="btn bg-primary text-white">{{product_response.product.tittle}}
       </a>
     </div>
-    <a href="{% url 'delete' id=product.id %}"
-        class="btn btn-danger">{% trans "Delete" %}</button>
+    <a href="{% url 'delete' id=product_response.product.id %}"
+      class="btn btn-danger">{% trans "Delete" %}</button>
     </a>
   </div>
   {% endfor %}

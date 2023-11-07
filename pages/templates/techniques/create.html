@@ -20,9 +20,10 @@
                 </ul>
             {% endif %}
 
-            <form method="POST" action="{% url 'newTechnique' %}">
+            <form method="POST" action="{% url 'newTechnique' %}" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="text" class="form-control mb-2" placeholder="Enter title" name="title" value="{{form.data.title }}" />
+              <input type="file" class="form-control mb-2" name="image" accept="image/*" />
               <input type="text" class="form-control mb-2" placeholder="Enter author" name="author" value="{{form.data.author }}" />
               <input type="text" class="form-control mb-2" placeholder="Enter category" name="category" value="{{form.data.category }}" />
               <input type="text" class="form-control mb-2" placeholder="Enter keyword" name="keyword" value="{{form.data.keyword }}" />

@@ -1,5 +1,3 @@
-from tkinter import messagebox
-from .services import get_name, get_price, get_color, get_size, get_description
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -16,18 +14,19 @@ from django.views.generic import ListView, TemplateView
 
 from .forms import ReviewForm
 from .models import Product, Review, Technique
-from django.utils.translation import gettext as _
-
 
 from django.shortcuts import redirect
 from django.utils.translation import activate
 from django.conf import settings
 
+from cloudinary import uploader
+import os
 
 def change_language(request, language_code):
     if language_code in [lang[0] for lang in settings.LANGUAGES]:
-        activate(language_code)
+      activate(language_code)
     return redirect(request.META.get('HTTP_REFERER', 'home'))
+
 
 class HomePageView(TemplateView): 
   template_name = 'pages/home.html'
@@ -57,9 +56,50 @@ class ProductIndexView(View):
     
     search_query = request.GET.get('searchProduct')
     if search_query:
-        viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
+        print('query')
+        products = Product.objects.filter(tittle__icontains=search_query)
+        response = []
+
+        for product in products:
+          product_with_image = {}
+          if product.image:
+            result = uploader.upload(product.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+            product.image = result['secure_url']
+            product_with_image['product'] = product
+            product_with_image['image'] = product.image
+            response.append(product_with_image)
+          else:
+            product_with_image['product'] = product
+            response.append(product_with_image)
+        viewData["products"] = response
     else:
-        viewData["products"] = Product.objects.all()
+        products = Product.objects.all()
+        response = []
+        for product in products:
+            product_with_image = {}
+            if product.image:
+              result = uploader.upload(product.image,
+                                        cloud_name = 'dbyp3pr3d',
+                                        api_key = os.environ.get('CLOUDINARY_KEY'),
+                                        api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                        secure = True,
+                                        )
+              product.image = result['secure_url']
+              product_with_image['product'] = product
+              product_with_image['image'] = product.image
+              response.append(product_with_image)
+
+              print('product.image', product.image)
+            else:
+              product_with_image['product'] = product
+              response.append(product_with_image)
+        print('response', response)
+        viewData["products"] = response
 
     return render(request, self.template_name, viewData)
 
@@ -70,27 +110,39 @@ class ProductShowView(View):
     # Check if product id is valid 
     try: 
       product_id = int(id) 
-
       if product_id < 1: 
         raise ValueError('Product id must be 1 or greater') 
 
       product = get_object_or_404(Product, pk=product_id) 
-
     except (ValueError, IndexError): 
-
       # If the product id is not valid, redirect to the home page 
       return HttpResponseRedirect(reverse('home')) 
     
     viewData = {} 
-
     product = get_object_or_404(Product, pk=product_id) 
+    response = None
+    product_with_image = {}
+
+    if product.image:
+      result = uploader.upload(product.image,
+                              cloud_name = 'dbyp3pr3d',
+                              api_key = os.environ.get('CLOUDINARY_KEY'),
+                              api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                              secure = True,
+                              )
+
+      product.image = result['secure_url']
+      product_with_image['detail'] = product
+      product_with_image['image'] = product.image
+      response = product_with_image
+
+    else:
+      product_with_image['detail'] = product
+      response = product_with_image
 
     viewData['tittle'] = product.tittle + ' - Tienda de Café - El barista' 
-
     viewData['subtitle'] =  product.tittle + ' - Product information' 
-
-    viewData['product'] = product
-
+    viewData['product'] = response
     reviews = Review.objects.filter(product=product)
     viewData['reviews'] = reviews 
 
@@ -109,42 +161,51 @@ class ProductListView(ListView):
     return context    
     
 class ProductForm(forms.ModelForm): 
-  class Meta: 
-    model = Product 
-    fields = '__all__' 
+  class Meta:
+    model = Product
+    fields = '__all__'
 
-  def clean_price(self): 
-    price = self.cleaned_data.get('price') 
+    # Use FileInput widget for image field
+    image = forms.ImageField(required=False, widget=forms.FileInput)
 
-    if price is not None and price <= 0: 
-      raise ValidationError('Price must be greater than zero.') 
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
 
-    return price 
+        if price is not None and price <= 0:
+            raise ValidationError('Price must be greater than zero.')
 
-class ProductCreateView(View): 
-  template_name = 'products/create.html' 
+        return price
 
-  def get(self, request): 
-    form = ProductForm() 
+class ProductCreateView(View):
+  template_name = 'products/create.html'
 
-    viewData = {} 
-    viewData['title'] = 'Create product' 
-    viewData['form'] = form 
+  def get(self, request):
+    form = ProductForm()
+    viewData = {}
+    viewData["title"] = "Create product"
+    viewData["form"] = form
+    return render(request, self.template_name, viewData)
 
-    return render(request, self.template_name, viewData) 
+  def post(self, request):
+    form = ProductForm(request.POST, request.FILES)
 
-  def post(self, request): 
-    form = ProductForm(request.POST) 
+    if form.is_valid():
+      product = form.save(commit=False)
 
-    if form.is_valid(): 
-      messagebox.showinfo(message='Elemento creado satisfactoriamente')
-      form.save() 
-      return redirect('index')  
+      # Check if image is provided
+      image = request.FILES.get('image')
+      if image:
+          # result = uploader.upload(image)
+          # product.image = result['secure_url']
+          pass
 
-    else: 
-      viewData = {} 
-      viewData['title'] = 'Create product' 
-      viewData['form'] = form 
+      product.save()
+      return redirect('index')
+      # return None
+    else:
+      viewData = {}
+      viewData['title'] = 'Create product'
+      viewData['form'] = form
 
       return render(request, self.template_name, viewData)
              
@@ -232,9 +293,48 @@ class TechniqueIndexView(View):
     
     search_query = request.GET.get('searchProduct')
     if search_query:
-        viewData["techniques"] = Technique.objects.filter(title__icontains=search_query)
+        techniques  = Technique.objects.filter(title__icontains=search_query)
+        response = []
+
+        for technique in techniques:
+          technique_with_image = {}
+          if technique.image:
+            result = uploader.upload(technique.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+            
+            technique.image = result['secure_url']
+            technique_with_image['technique'] = technique
+            technique_with_image['image'] = technique.image
+            response.append(technique_with_image)
+          else:
+            technique_with_image['technique'] = technique
+            response.append(technique_with_image)
+        viewData["techniques"] = response
     else:
-        viewData["techniques"] = Technique.objects.all()
+        techniques = Technique.objects.all()
+        response = []
+        for technique in techniques:
+          technique_with_image = {}
+          if technique.image:
+            result = uploader.upload(technique.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+             
+            technique.image = result['secure_url']
+            technique_with_image['technique'] = technique
+            technique_with_image['image'] = technique.image
+            response.append(technique_with_image)
+          else:
+            technique_with_image['technique'] = technique
+            response.append(technique_with_image)
+        viewData["techniques"] = response
 
     return render(request, self.template_name, viewData)
   
@@ -253,16 +353,39 @@ class TechniqueShowView(View):
     
     viewData = {}
     technique = get_object_or_404(Technique, pk=technique_id)
+
+    response = None
+    technique_with_image = {}
+
+    if technique.image:
+      result = uploader.upload(technique.image,
+                                cloud_name = 'dbyp3pr3d',
+                                api_key = os.environ.get('CLOUDINARY_KEY'),
+                                api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                secure = True,
+                                )
+      
+      technique.image = result['secure_url']
+      technique_with_image['detail'] = technique
+      technique_with_image['image'] = technique.image
+      response = technique_with_image
+    else:
+      technique_with_image['detail'] = technique
+      response = technique_with_image
+
     viewData["title"] = technique.title + " - Taller 1"
     viewData["subtitle"] =  technique.title + " - Technique information"
-    viewData["technique"] = technique
+    viewData["technique"] = response
 
     return render(request, self.template_name, viewData)
   
 class TechniqueForm(forms.ModelForm):
   class Meta:
     model = Technique
-    fields = ['title', 'author', 'category', 'keyword', 'description', 'product_list']
+    # fields = ['title', 'author', 'category', 'keyword', 'description', 'product_list']
+    fields = '__all__'
+
+    image = forms.ImageField(required=False, widget=forms.FileInput)
 
 class TechniqueCreateView(View):
   template_name = 'techniques/create.html'
@@ -275,9 +398,21 @@ class TechniqueCreateView(View):
     return render(request, self.template_name, viewData)
 
   def post(self, request):
-    form = TechniqueForm(request.POST)
+    print('Create technique')
+    form = TechniqueForm(request.POST, request.FILES)
+
     if form.is_valid(): 
-      form.save()
+      technique = form.save()
+
+      print('request.FILES', request.FILES)
+      print('technique data', technique)
+
+      image = request.FILES.get('image')
+      if image:
+         pass
+      
+      technique.save()
+
       viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
       return render(request, self.template_name, viewData)
     else:
