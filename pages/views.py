@@ -312,23 +312,21 @@ class TechniqueDeleteView(View):
   
 class ExternalApiShowView(View):
   template_name = 'external_api/show.html'
-  def products_api(self,request):
+  def get(self,request):
+    #products = []
     #pull data from third party rest api
-    response = requests.get('34.95.42.190:8000/api/products/')
+    response = requests.get('http://34.95.42.190:8000/api/products/')
     #convert reponse data into json
     products_api = response.json()
-    #print(users)
-    return render(request, self.template_name, {'products': products_api})
-  
-  def dispatch(self, request, *args, **kwargs):
-    # Try to dispatch to the right method; if a method doesn't exist,
-    # defer to the error handler. Also defer to the error handler if the
-    # request method isn't on the approved list.
-    if request.method.lower() in self.http_method_names:
-        handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
-    else:
-        handler = self.http_method_not_allowed
-    return handler(request, *args, **kwargs)
+    print(products_api['Products'])
+    #for product in products_api:
+      #details = {}
+    viewData = {}
+    viewData["products_api"] = products_api['Products']
+   
+      
+    return render(request, self.template_name, viewData)
+
     
   
   
