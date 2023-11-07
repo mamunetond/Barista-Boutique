@@ -30,7 +30,9 @@
         <div class="col-md-4 mb-4">
           <a href="{% url 'detail' id=product_response.product.id %}" class="card-link" style="color:inherit; text-decoration:none">
             <div class="card">
-              <img src="{% if product_response.image %}{{ product_response.image }}{% else %}https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg{% endif %}" class="card-img-top" alt="{{ product_response.product.title }}">
+              <div class="card-img-container">
+                <img src="{% if product_response.image %}{{ product_response.image }}{% else %}https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg{% endif %}" class="card-img-top" alt="{{ product_response.product.title }}">
+              </div>
               <div class="card-body text-center">
                 <h5 class="card-title">{{ product_response.product.tittle }}</h5>
               </div>
