@@ -270,7 +270,10 @@ def createReview(request, product_id):
             newReview.user = request.user
             newReview.product = product
             newReview.save()
-            return redirect('detail', newReview.product.id)
+
+            print('newReview in product id', newReview.product.id)
+
+            return redirect('/products/{}'.format(product.id))
         
         except ValueError:
           return render(request,'reviews/create.html', {'form':ReviewForm(), 'error':'bad data passed in'})
@@ -287,7 +290,7 @@ def updateReview(request, review_id):
           try:
               form = ReviewForm(request.POST, instance=review)
               form.save()
-              return redirect('detail', id)
+              return redirect('/products/{}'.format(review.product.id))
           except ValueError:
               return render(request, 'reviews/update.html',
               {'review': review,'form':form,'error':'Bad data in form'})
@@ -297,7 +300,7 @@ def updateReview(request, review_id):
 def deleteReview(request, review_id):
     review = get_object_or_404(Review, pk=review_id, user=request.user)
     review.delete()
-    return redirect('detail', review.product.id)
+    return redirect('/products/{}'.format(review.product.id))
         
 # techniques views
 class TechniqueIndexView(View):
