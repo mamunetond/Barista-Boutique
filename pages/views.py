@@ -25,6 +25,15 @@ import os
 from django import forms
 import requests
 
+import xlwt
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import Paragraph
+
 def change_language(request, language_code):
     if language_code in [lang[0] for lang in settings.LANGUAGES]:
       activate(language_code)
@@ -482,6 +491,51 @@ class ExternalApiShowView(View):
     
   
   
+def download_products_excel(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="products.xls"'
 
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Products')
+
+    row_num = 0
+    columns = ['ID', 'Title', 'Category', 'Price', 'Provider', 'Stock', 'Description']
+    for col_num, column_title in enumerate(columns):
+        ws.write(row_num, col_num, column_title)
+    products = Product.objects.all()
+
+
+    for product in products:
+        row_num += 1
+        row = [product.id, product.tittle, product.category, product.price, product.provider, product.stock, product.description]
+        for col_num, cell_value in enumerate(row):
+            ws.write(row_num, col_num, cell_value)
+
+    wb.save(response)
+    return response
+
+
+def download_products_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="products.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+    products = Product.objects.all()
+
+    data = []
+    data.append(['ID', 'Title', 'Category', 'Price', 'Provider', 'Stock'])
+    for product in products:
+        data.append([product.id, product.tittle, product.category, product.price, product.provider, product.stock])
+
+    col_widths = [1 * inch, 2 * inch, 1.5 * inch, 1 * inch, 1.5 * inch, 1 * inch]
+
+    table = Table(data, colWidths=col_widths)
+
+    doc = SimpleDocTemplate(response)
+    elements = []
+    elements.append(table)
+    doc.build(elements)
+    return response
         
       
