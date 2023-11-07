@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import cloudinary_storage
 from dotenv import load_dotenv
 import os
 
@@ -45,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
     'accounts',
+    'api_Product',
+    'rest_framework',
+    'coreapi',
     'cloudinary',
     'cloudinary_storage'
 ]
@@ -133,6 +135,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'loginaccount'
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
 
 CLOUDINARY_STORAGE = {
   'CLOUD_NAME': 'dbyp3pr3d',

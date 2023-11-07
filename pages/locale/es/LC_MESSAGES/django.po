@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-02 18:08-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\pages\templates\createreview.html:9
+msgid "Add Review for"
+msgstr "Agregar Reseña"
+
+#: .\pages\templates\createreview.html:29 .\pages\templates\detail.html:34
+msgid "Add Review"
+msgstr "Agregar Reseña"
+
+#: .\pages\templates\detail.html:16
+msgid "Provider:"
+msgstr "Proveedor:"
+
+#: .\pages\templates\detail.html:19
+msgid "stock:"
+msgstr "Existencias:"
+
+#: .\pages\templates\detail.html:23
+msgid "Description: "
+msgstr "Descripcion: "
+
+#: .\pages\templates\detail.html:39
+msgid "Reviews"
+msgstr "Reseñas"
+
+#: .\pages\templates\detail.html:44
+msgid "Review by "
+msgstr "Reseña hecha por "
+
+#: .\pages\templates\detail.html:53
+msgid "Update"
+msgstr "Actualizar"
+
+#: .\pages\templates\detail.html:57 .\pages\templates\detail.html:70
+#: .\pages\templates\products\index.html:42
+#: .\pages\templates\techniques\index.html:42
+#: .\pages\templates\techniques\show.html:39
+msgid "Delete"
+msgstr "Eliminar"
+
+#: .\pages\templates\pages\base.html:27
+msgid "Home"
+msgstr ""
+
+#: .\pages\templates\pages\home.html:10
+msgid "¡ Bienvenido a Barista Boutique !"
+msgstr "¡ Bienvenido a Barista Boutique !"
+
+#: .\pages\templates\products\create.html:18
+msgid "Create product"
+msgstr "Crear Producto"
+
+#: .\pages\templates\products\index.html:16
+#: .\pages\templates\techniques\index.html:16
+msgid "Create"
+msgstr "Crear"
+
+#: .\pages\templates\products\index.html:27
+#: .\pages\templates\techniques\index.html:27
+msgid "Search"
+msgstr "Buscar"
+
+#: .\pages\templates\products\show.html:23
+#, fuzzy
+#| msgid "Provider:"
+msgid "Provider: "
+msgstr "Proveedor: "
+
+#: .\pages\templates\products\show.html:26
+#, fuzzy
+#| msgid "stock:"
+msgid "stock: "
+msgstr "Existencias: "
+
+#: .\pages\templates\products\show.html:30
+#, fuzzy
+#| msgid "Description:"
+msgid "Descripcion: "
+msgstr "Descripcion: "
+
+#: .\pages\templates\techniques\create.html:11
+msgid "Create Technique"
+msgstr "Crear Tecnica"
+
+#: .\pages\templates\techniques\show.html:20
+msgid "Author: "
+msgstr "Autor: "
+
+#: .\pages\templates\techniques\show.html:23
+msgid "Category: "
+msgstr "Categoria: "
+
+#: .\pages\templates\techniques\show.html:27
+
+msgid "Description: "
+msgstr "Descripcion: "
+
+#: .\pages\templates\techniques\show.html:30
+msgid "Products that you need: "
+msgstr "Productos que necesitas: "
+
+#: .\pages\templates\updatereview.html:9
+msgid "Update Review for"
+msgstr "Reseña agregada por"
+
+#: .\pages\templates\updatereview.html:29
+msgid "Update Review"
+msgstr "Actualizar Reseña"
+
+#: .\taller01_project\settings.py:126
+msgid "English"
+msgstr ""
+
+#: .\taller01_project\settings.py:127
+msgid "Spanish"
+msgstr ""

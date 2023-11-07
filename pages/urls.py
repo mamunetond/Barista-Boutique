@@ -12,6 +12,7 @@ from .views import (
     TechniqueDeleteView,
     TechniqueIndexView,
     TechniqueShowView,
+    ExternalApiShowView
 )
 
 urlpatterns = [
@@ -30,6 +31,8 @@ urlpatterns = [
     path('techniques/', TechniqueIndexView.as_view(), name='techniques'),
     path('techniques/create', TechniqueCreateView.as_view(), name='newTechnique'),
     path('techniques/<str:id>', TechniqueShowView.as_view(), name='showTechnique'),
-    path('techniques/<str:id>/delete', TechniqueDeleteView.as_view(), name='deleteTechnique')
+    path('techniques/<str:id>/delete', TechniqueDeleteView.as_view(), name='deleteTechnique'),
+    path('change-language/<str:language_code>/', views.change_language, name='change_language'),
+    path('products_api/', ExternalApiShowView.as_view(), name='products_api'),
 ]
 

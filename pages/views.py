@@ -1,9 +1,8 @@
-from tkinter import messagebox
-
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
+import requests
 from django.shortcuts import (
     get_object_or_404,
     redirect,
@@ -15,9 +14,18 @@ from django.views.generic import ListView, TemplateView
 
 from .forms import ReviewForm
 from .models import Product, Review, Technique
+
+from django.shortcuts import redirect
+from django.utils.translation import activate
+from django.conf import settings
+
 from cloudinary import uploader
-from cloudinary.utils import cloudinary_url
 import os
+
+def change_language(request, language_code):
+    if language_code in [lang[0] for lang in settings.LANGUAGES]:
+      activate(language_code)
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 
 class HomePageView(TemplateView): 
@@ -435,6 +443,30 @@ class TechniqueDeleteView(View):
       return HttpResponseRedirect(reverse('home'))
 
     technique.delete()
-    return redirect('techniques')    
+    return redirect('techniques')
+  
+class ExternalApiShowView(View):
+  template_name = 'external_api/show.html'
+  def products_api(self,request):
+    #pull data from third party rest api
+    response = requests.get('34.95.42.190:8000/api/products/')
+    #convert reponse data into json
+    products_api = response.json()
+    #print(users)
+    return render(request, self.template_name, {'products': products_api})
+  
+  def dispatch(self, request, *args, **kwargs):
+    # Try to dispatch to the right method; if a method doesn't exist,
+    # defer to the error handler. Also defer to the error handler if the
+    # request method isn't on the approved list.
+    if request.method.lower() in self.http_method_names:
+        handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
+    else:
+        handler = self.http_method_not_allowed
+    return handler(request, *args, **kwargs)
+    
+  
+  
+
         
       

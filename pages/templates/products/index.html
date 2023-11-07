@@ -1,6 +1,7 @@
 {% extends 'pages/base.html' %} 
 {% block title %} {{title}} {% endblock %} 
 {% block header_title %} {{subtitle}} {% endblock %} 
+{% load i18n %} 
 
 {% block content %}
 <div class="container">
@@ -11,7 +12,7 @@
           <h1 class="text-center subtitle">{{subtitle}}</h1>
         </div> 
         <div class="justify-content-end">
-          <a href="{% url 'form' %}" class="btn brown-button">Crear</a>
+          <a href="{% url 'form' %}" class="btn brown-button">{% trans "Create" %}</a>
         </div>
       </div>
     </div>
@@ -22,7 +23,7 @@
   <form action="" method="get" class="d-flex justify-content-center">
     <div class="input-group">
       <input type="text" name="searchProduct" class="form-control" placeholder="Search for Technique..." value="{{ request.GET.searchProduct }}">
-      <button type="submit" class="btn brown-button">Search</button>
+      <button type="submit" class="btn brown-button">{% trans "Search" %}</button>
     </div>
   </form>
 </div>
@@ -42,7 +43,7 @@
       </a>
     </div>
     <a href="{% url 'delete' id=product_response.product.id %}"
-        class="btn btn-danger">Eliminar</button>
+      class="btn btn-danger">{% trans "Delete" %}</button>
     </a>
   </div>
   {% endfor %}
