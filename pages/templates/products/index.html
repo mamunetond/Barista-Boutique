@@ -1,52 +1,49 @@
-{% extends 'pages/base.html' %} 
-{% block title %} {{title}} {% endblock %} 
-{% block header_title %} {{subtitle}} {% endblock %} 
+{% extends 'pages/base.html' %}
+{% block title %} {{title}} {% endblock %}
+{% block header_title %} {{subtitle}} {% endblock %}
+
 {% load i18n %} 
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex justify-content-between">
-        <div class="justify-content-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
           <h1 class="text-center subtitle">{% trans "Products List" %}</h1>
-        </div> 
-        <div class="justify-content-end">
-          <a href="{% url 'form' %}" class="btn brown-button">{% trans "Create" %}</a>
+          <a class="btn brown-button" href="{% url 'form'%}">{% trans "Create" %}</a>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="search-container text-center my-4">
-  <form action="" method="get" class="d-flex justify-content-center">
-    <div class="input-group">
-      <input type="text" name="searchProduct" class="form-control" placeholder="Search for Technique..." value="{{ request.GET.searchProduct }}">
-      <button type="submit" class="btn brown-button">{% trans "Search" %}</button>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <form action="" method="get" class="input-group">
+          <input type="text" name="searchProduct" class="form-control" placeholder="{% trans 'Search for Product...' %}" value="{{ request.GET.searchProduct }}">
+          <button type="submit" class="btn brown-button">{% trans "Search" %}</button>
+        </form>
+      </div>
     </div>
-  </form>
-</div>
-
-<div class="techniques-container">
-  {% for product_response in products %}
-  {% comment %} print product on the console {% endcomment %}
-  <div class="card">
-    {% if product_response.image %}
-      <img src="{{ product_response.image }}" class="card-img-top img-card">
-    {% else %}
-      <img src="https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg" class="card-img-top img-card">
-    {% endif %}
-    <div class="card-body text-center">
-      <a href="{% url 'detail' id=product_response.product.id %}"
-        class="btn bg-primary text-white">{{product_response.product.tittle}}
-      </a>
-    </div>
-    <a href="{% url 'delete' id=product_response.product.id %}"
-      class="btn btn-danger">{% trans "Delete" %}</button>
-    </a>
   </div>
-  {% endfor %}
-</div>
 
+  <div class="container mt-4">
+    <div class="row">
+      {% for product_response in products %}
+        <div class="col-md-4 mb-4">
+          <a href="{% url 'detail' id=product_response.product.id %}" class="card-link" style="color:inherit; text-decoration:none">
+            <div class="card">
+              <img src="{% if product_response.image %}{{ product_response.image }}{% else %}https://i.pinimg.com/564x/13/61/6d/13616d072ddca840b412866908b41854.jpg{% endif %}" class="card-img-top" alt="{{ product_response.product.title }}">
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ product_response.product.tittle }}</h5>
+              </div>
+              <div class="card-footer text-center">
+                <form action="{% url 'delete' product_response.product.id %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('{% trans 'Are you sure you want to delete this product?' %}')">{% trans "Delete" %}</button>
+                </form>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

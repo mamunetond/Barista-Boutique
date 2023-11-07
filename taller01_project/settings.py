@@ -48,15 +48,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'pages.apps.PagesConfig',
+    'pages.apps.PagesConfig',
     'accounts',
     'api_Product',
     'rest_framework',
     'corsheaders',
     'coreapi',
     'cloudinary',
-    'cloudinary_storage',
-    'pages'
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
