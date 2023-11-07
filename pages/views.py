@@ -192,13 +192,6 @@ class ProductCreateView(View):
     if form.is_valid():
       product = form.save(commit=False)
 
-      # Check if image is provided
-      image = request.FILES.get('image')
-      if image:
-          # result = uploader.upload(image)
-          # product.image = result['secure_url']
-          pass
-
       product.save()
       return redirect('index')
       # return None
@@ -395,18 +388,12 @@ class TechniqueCreateView(View):
 
     if form.is_valid(): 
       technique = form.save()
-
-      print('request.FILES', request.FILES)
-      print('technique data', technique)
-
-      image = request.FILES.get('image')
-      if image:
-         pass
       
       technique.save()
+      return redirect('techniques')
 
-      viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
-      return render(request, self.template_name, viewData)
+      # viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
+      # return render(request, self.template_name, viewData)
     else:
       viewData = {}
       viewData["title"] = "Create technique"
