@@ -16,6 +16,7 @@ from django.views.generic import ListView, TemplateView
 from .forms import ReviewForm
 from .models import Product, Review, Technique
 from cloudinary import uploader
+from cloudinary.utils import cloudinary_url
 import os
 
 
@@ -68,8 +69,6 @@ class ProductIndexView(View):
             product_with_image['product'] = product
             response.append(product_with_image)
         viewData["products"] = response
-
-        # viewData["products"] = Product.objects.filter(tittle__icontains=search_query)
     else:
         products = Product.objects.all()
         response = []
@@ -286,7 +285,27 @@ class TechniqueIndexView(View):
     
     search_query = request.GET.get('searchProduct')
     if search_query:
-        viewData["techniques"] = Technique.objects.filter(title__icontains=search_query)
+        techniques  = Technique.objects.filter(title__icontains=search_query)
+        response = []
+
+        for technique in techniques:
+          technique_with_image = {}
+          if technique.image:
+            result = uploader.upload(technique.image,
+                                      cloud_name = 'dbyp3pr3d',
+                                      api_key = os.environ.get('CLOUDINARY_KEY'),
+                                      api_secret = os.environ.get('CLOUDINARY_API_SECRET'),
+                                      secure = True,
+                                      )
+            
+            technique.image = result['secure_url']
+            technique_with_image['technique'] = technique
+            technique_with_image['image'] = technique.image
+            response.append(technique_with_image)
+          else:
+            technique_with_image['technique'] = technique
+            response.append(technique_with_image)
+        viewData["techniques"] = response
     else:
         techniques = Technique.objects.all()
         response = []
@@ -371,9 +390,14 @@ class TechniqueCreateView(View):
     return render(request, self.template_name, viewData)
 
   def post(self, request):
-    form = TechniqueForm(request.POST)
+    print('Create technique')
+    form = TechniqueForm(request.POST, request.FILES)
+
     if form.is_valid(): 
       technique = form.save()
+
+      print('request.FILES', request.FILES)
+      print('technique data', technique)
 
       image = request.FILES.get('image')
       if image:
