@@ -238,28 +238,20 @@ class ProductDeleteView(View):
     
     template_name = 'products/delete.html'
     
-    def get(self, request, id):
-        # Check if product id is valid 
-
-        try: 
-
-            product_id = int(id) 
-
-            if product_id < 1: 
-
-                raise ValueError('Product id must be 1 or greater') 
-
-            product = get_object_or_404(Product, id=product_id) 
-
-        except (ValueError, IndexError): 
-
-            # If the product id is not valid, redirect to the home page 
-
-            return HttpResponseRedirect(reverse('home')) 
-         
-        product = get_object_or_404(Product, id=product_id)
-        product.delete()
-        return redirect('index')
+    def post(self, request, id):
+      # Check if product id is valid 
+      try: 
+          product_id = int(id) 
+          print('product_id', product_id)
+          if product_id < 1: 
+              raise ValueError('Product id must be 1 or greater') 
+          product = get_object_or_404(Product, id=product_id) 
+      except (ValueError, IndexError): 
+          # If the product id is not valid, redirect to the home page 
+          return HttpResponseRedirect(reverse('home')) 
+      product = get_object_or_404(Product, id=product_id)
+      product.delete()
+      return redirect('index')
     
 def detail(request, product_id):
     product = get_object_or_404(Product,pk=product_id)
@@ -428,18 +420,12 @@ class TechniqueCreateView(View):
 
     if form.is_valid(): 
       technique = form.save()
-
-      print('request.FILES', request.FILES)
-      print('technique data', technique)
-
-      image = request.FILES.get('image')
-      if image:
-         pass
       
       technique.save()
+      return redirect('techniques')
 
-      viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
-      return render(request, self.template_name, viewData)
+      # viewData = {"title": "Create technique", "form": form, "success_message": "Technique created"}
+      # return render(request, self.template_name, viewData)
     else:
       viewData = {}
       viewData["title"] = "Create technique"
@@ -461,6 +447,9 @@ class TechniqueDeleteView(View):
   def post(self, request, id):
     try:
       technique_id = int(id)
+
+      print('technique_id', technique_id)
+
       if technique_id < 1:
           raise ValueError("Technique id must be 1 or greater")
       technique = get_object_or_404(Technique, pk=technique_id)

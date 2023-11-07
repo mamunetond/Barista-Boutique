@@ -6,7 +6,7 @@ class Product(models.Model):
   provider = models.CharField(max_length=255)
   category = models.CharField(max_length=255)
   keyword = models.CharField(max_length=255)
-  image = models.ImageField(upload_to='development', null=True)
+  image = models.ImageField(upload_to='development', null=True, blank=True)
   price = models.IntegerField()
   stock = models.IntegerField()
   description = models.CharField(max_length=1200)
@@ -16,7 +16,7 @@ class Product(models.Model):
 
 class Review(models.Model):
   text = models.CharField(max_length=100)
-  date = models.DateTimeField(auto_now_add=True)
+  date = models.DateTimeField(auto_now_add=True, blank=True)
   user = models.ForeignKey(User,on_delete=models.CASCADE)
   product = models.ForeignKey(Product,on_delete=models.CASCADE)
   buyAgain = models.BooleanField()
@@ -29,7 +29,7 @@ class Technique(models.Model):
   author = models.TextField()
   category = models.TextField()
   keyword = models.TextField()
-  image = models.ImageField(upload_to='development', null=True)
+  image = models.ImageField(upload_to='development', null=True, blank=True)
   description = models.TextField()
   product_list = models.TextField()
   created_at = models.DateTimeField(auto_now_add=True)
