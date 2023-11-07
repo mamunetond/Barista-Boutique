@@ -1,9 +1,10 @@
 from tkinter import messagebox
-
+from .services import get_name, get_price, get_color, get_size, get_description
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
+import requests
 from django.shortcuts import (
     get_object_or_404,
     redirect,
@@ -307,6 +308,30 @@ class TechniqueDeleteView(View):
       return HttpResponseRedirect(reverse('home'))
 
     technique.delete()
-    return redirect('techniques')    
+    return redirect('techniques')
+  
+class ExternalApiShowView(View):
+  template_name = 'external_api/show.html'
+  def products_api(self,request):
+    #pull data from third party rest api
+    response = requests.get('34.95.42.190:8000/api/products/')
+    #convert reponse data into json
+    products_api = response.json()
+    #print(users)
+    return render(request, self.template_name, {'products': products_api})
+  
+  def dispatch(self, request, *args, **kwargs):
+    # Try to dispatch to the right method; if a method doesn't exist,
+    # defer to the error handler. Also defer to the error handler if the
+    # request method isn't on the approved list.
+    if request.method.lower() in self.http_method_names:
+        handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
+    else:
+        handler = self.http_method_not_allowed
+    return handler(request, *args, **kwargs)
+    
+  
+  
+
         
       
