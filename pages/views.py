@@ -22,6 +22,9 @@ from django.conf import settings
 from cloudinary import uploader
 import os
 
+from django import forms
+import requests
+
 def change_language(request, language_code):
     if language_code in [lang[0] for lang in settings.LANGUAGES]:
       activate(language_code)
@@ -175,6 +178,20 @@ class ProductForm(forms.ModelForm):
             raise ValidationError('Price must be greater than zero.')
 
         return price
+    
+  country = forms.CharField(max_length=100)
+
+  def clean_country(self):
+        country = self.cleaned_data.get('country')
+
+        # Realiza una solicitud a la API para verificar si el país existe
+        api_url = f'https://restcountries.com/v3.1/name/{country}'
+        response = requests.get(api_url)
+
+        if response.status_code != 200:
+            raise forms.ValidationError('País no válido. Verifique el nombre del país.')
+
+        return country
 
 class ProductCreateView(View):
   template_name = 'products/create.html'
@@ -191,6 +208,21 @@ class ProductCreateView(View):
 
     if form.is_valid():
       product = form.save(commit=False)
+
+      country = form.cleaned_data.get('country')
+      api_url = f'https://restcountries.com/v3.1/name/{country}'
+      response = requests.get(api_url)
+
+      if response.status_code != 200:
+          viewData = {"title": "Create product", "form": form, "error_message": "País no válido. Verifique el nombre del país."}
+          return render(request, self.template_name, viewData)
+
+      # Check if image is provided
+      image = request.FILES.get('image')
+      if image:
+          # result = uploader.upload(image)
+          # product.image = result['secure_url']
+          pass
 
       product.save()
       return redirect('index')
