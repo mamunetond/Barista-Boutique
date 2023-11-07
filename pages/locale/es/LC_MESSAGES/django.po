@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 18:08-0500\n"
+"POT-Creation-Date: 2023-11-06 22:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,45 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\pages\templates\createreview.html:9
-msgid "Add Review for"
-msgstr "Agregar Reseña"
-
-#: .\pages\templates\createreview.html:29 .\pages\templates\detail.html:34
-msgid "Add Review"
-msgstr "Agregar Reseña"
-
-#: .\pages\templates\detail.html:16
-msgid "Provider:"
-msgstr "Proveedor:"
-
-#: .\pages\templates\detail.html:19
-msgid "stock:"
-msgstr "Existencias:"
-
-#: .\pages\templates\detail.html:23
-msgid "Description: "
-msgstr "Descripcion: "
-
-#: .\pages\templates\detail.html:39
-msgid "Reviews"
-msgstr "Reseñas"
-
-#: .\pages\templates\detail.html:44
-msgid "Review by "
-msgstr "Reseña hecha por "
-
-#: .\pages\templates\detail.html:53
-msgid "Update"
-msgstr "Actualizar"
-
-#: .\pages\templates\detail.html:57 .\pages\templates\detail.html:70
-#: .\pages\templates\products\index.html:42
-#: .\pages\templates\techniques\index.html:42
-#: .\pages\templates\techniques\show.html:39
-msgid "Delete"
-msgstr "Eliminar"
-
 #: .\pages\templates\pages\base.html:27
 msgid "Home"
 msgstr ""
@@ -65,16 +26,59 @@ msgstr ""
 msgid "¡ Bienvenido a Barista Boutique !"
 msgstr "¡ Bienvenido a Barista Boutique !"
 
-#: .\pages\templates\products\create.html:18
+#: .\pages\templates\products\create.html:13
 msgid "Create product"
 msgstr "Crear Producto"
 
-#: .\pages\templates\products\index.html:16
+#: .\pages\templates\products\detail.html:20
+msgid "Provider:"
+msgstr "Proveedor:"
+
+#: .\pages\templates\products\detail.html:23
+msgid "stock:"
+msgstr "Existencias:"
+
+#: .\pages\templates\products\detail.html:27
+#, fuzzy
+#| msgid "Description: "
+msgid "Description:"
+msgstr "Descripcion: "
+
+#: .\pages\templates\products\detail.html:38
+#: .\pages\templates\reviews\create.html:29
+msgid "Add Review"
+msgstr "Agregar Reseña"
+
+#: .\pages\templates\products\detail.html:43
+msgid "Reviews"
+msgstr "Reseñas"
+
+#: .\pages\templates\products\detail.html:48
+msgid "Review by "
+msgstr "Reseña hecha por "
+
+#: .\pages\templates\products\detail.html:57
+msgid "Update"
+msgstr "Actualizar"
+
+#: .\pages\templates\products\detail.html:61
+#: .\pages\templates\products\detail.html:74
+#: .\pages\templates\products\index.html:47
+#: .\pages\templates\techniques\index.html:46
+#: .\pages\templates\techniques\show.html:43
+msgid "Delete"
+msgstr "Eliminar"
+
+#: .\pages\templates\products\index.html:12
+msgid "Products List"
+msgstr "Lista de Productos"
+
+#: .\pages\templates\products\index.html:15
 #: .\pages\templates\techniques\index.html:16
 msgid "Create"
 msgstr "Crear"
 
-#: .\pages\templates\products\index.html:27
+#: .\pages\templates\products\index.html:26
 #: .\pages\templates\techniques\index.html:27
 msgid "Search"
 msgstr "Buscar"
@@ -97,39 +101,47 @@ msgstr "Existencias: "
 msgid "Descripcion: "
 msgstr "Descripcion: "
 
+#: .\pages\templates\reviews\create.html:9
+msgid "Add Review for"
+msgstr "Agregar Reseña"
+
+#: .\pages\templates\reviews\update.html:9
+msgid "Update Review for"
+msgstr "Reseña agregada por"
+
+#: .\pages\templates\reviews\update.html:29
+msgid "Update Review"
+msgstr "Actualizar Reseña"
+
 #: .\pages\templates\techniques\create.html:11
 msgid "Create Technique"
 msgstr "Crear Tecnica"
 
-#: .\pages\templates\techniques\show.html:20
+#: .\pages\templates\techniques\index.html:13
+
+msgid "Techniques List"
+msgstr "Lista de Tecnicas"
+
+#: .\pages\templates\techniques\show.html:24
 msgid "Author: "
 msgstr "Autor: "
 
-#: .\pages\templates\techniques\show.html:23
+#: .\pages\templates\techniques\show.html:27
 msgid "Category: "
 msgstr "Categoria: "
 
-#: .\pages\templates\techniques\show.html:27
-
+#: .\pages\templates\techniques\show.html:31
 msgid "Description: "
 msgstr "Descripcion: "
 
-#: .\pages\templates\techniques\show.html:30
+#: .\pages\templates\techniques\show.html:34
 msgid "Products that you need: "
 msgstr "Productos que necesitas: "
 
-#: .\pages\templates\updatereview.html:9
-msgid "Update Review for"
-msgstr "Reseña agregada por"
-
-#: .\pages\templates\updatereview.html:29
-msgid "Update Review"
-msgstr "Actualizar Reseña"
-
-#: .\taller01_project\settings.py:126
+#: .\taller01_project\settings.py:140
 msgid "English"
 msgstr ""
 
-#: .\taller01_project\settings.py:127
+#: .\taller01_project\settings.py:141
 msgid "Spanish"
 msgstr ""
