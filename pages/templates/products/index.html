@@ -46,6 +46,16 @@
           </a>
         </div>
       {% endfor %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center mt-4">
+      <a href="{% url 'download_products_excel' %}" class="btn btn-primary mx-2">Download Excel</a>
+      <a href="{% url 'download_products_pdf' %}" class="btn btn-primary mx-2">Download PDF</a>
     </div>
   </div>
+</div>
+
+</div>
+</div>
 {% endblock %}

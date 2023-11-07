@@ -34,5 +34,7 @@ urlpatterns = [
     path('techniques/<str:id>/delete', TechniqueDeleteView.as_view(), name='deleteTechnique'),
     path('change-language/<str:language_code>/', views.change_language, name='change_language'),
     path('products_api/', ExternalApiShowView.as_view(), name='products_api'),
+    path('products/download/excel/', views.download_products_excel, name='download_products_excel'),
+    path('products/download/pdf/', views.download_products_pdf, name='download_products_pdf'),
 ]
 
